@@ -48,13 +48,21 @@ func Multiplicador(A, B [][]int64) [][]int64 {
 
 func Naive(M [][][]int64) {
 
-	AB := Multiplicador(M[0], M[1])
-	ABC := Multiplicador(AB, M[2])
-	ABCD := Multiplicador(ABC, M[3])
+	if len(M) == 1 {
+		fmt.Println("Naive:")
+		PrintMatrix(M[0])
+		fmt.Println("---------")
+		return
+	}
 
-	fmt.Println("Naive:")
-	PrintMatrix(ABCD)
-	fmt.Println("---------")
+	MxM := Multiplicador(M[0], M[1])
+	M[0] = MxM
+
+	for i := 1; i < (len(M) - 1); i++ {
+		M[i] = M[i+1]
+	}
+
+	Naive(M[:(len(M) - 1)])
 }
 
 func Greedy(M [][][]int64) {
@@ -81,11 +89,9 @@ func Greedy(M [][][]int64) {
 
 	for i := (save + 1); i < (len(M) - 1); i++ {
 		M[i] = M[i+1]
-		M[i+1] = nil
 	}
 
 	Greedy(M[:(len(M) - 1)])
-	return
 }
 
 func main() {
@@ -98,6 +104,11 @@ func main() {
 	D := M_Factory(3, 2)
 
 	Matrices := [][][]int64{A, B, C, D}
+
+	Aux1 := make([][][]int64, len(Matrices))
+	Aux2 := make([][][]int64, len(Matrices))
+	copy(Aux1, Matrices[0:])
+	copy(Aux2, Matrices[0:])
 
 	fmt.Println("Matriz A:")
 	PrintMatrix(A)
@@ -115,8 +126,7 @@ func main() {
 	PrintMatrix(D)
 	fmt.Println("---------")
 
-	Naive(Matrices)
-
-	Greedy(Matrices)
+	Naive(Aux1)
+	Greedy(Aux2)
 
 }
