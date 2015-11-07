@@ -1,3 +1,7 @@
+// Tarea 1 - CIT-2001 - Diseño y Análisis de Algoritmos - Universidad Diego Portales
+// Integrantes: Guillermo Iglesias Birkner - Josefa González Mejías
+// Profesor: Francisco Claude - Ayudante: Marcello Tavano
+
 package main
 
 import (
@@ -14,7 +18,7 @@ func M_Factory(n, m int) [][]int64 {
 	}
 	for i := 0; i < n; i++ {
 		for j := 0; j < m; j++ {
-			Matrix[i][j] = (rand.Int63n(2) + 1)
+			Matrix[i][j] = (rand.Int63n(1) + 1)
 		}
 	}
 	return Matrix
@@ -107,7 +111,7 @@ func Greedy(M [][][]int64, cost int64) {
 	Greedy(M[:(len(M)-1)], cost)
 }
 
-func Top_Down(M [][][]int64) int64 {
+func Top_Down(M [][][]int64) [][]int64 {
 
 	n := (len(M) + 1)
 
@@ -120,9 +124,11 @@ func Top_Down(M [][][]int64) int64 {
 
 	cost := Top_Down_Func(M, m, s, 1, int64(len(M)))
 
-	PrintMatrix(Mult(M, s, 1, int64(len(M))))
+	NewMatrix := Mult(M, s, 1, int64(len(M)))
 
-	return cost
+	fmt.Println("Costo Total:", cost)
+
+	return NewMatrix
 }
 
 func Top_Down_Func(M [][][]int64, m, s [][]int64, i, j int64) int64 {
@@ -143,7 +149,7 @@ func Top_Down_Func(M [][][]int64, m, s [][]int64, i, j int64) int64 {
 	return m[i][j]
 }
 
-func Bottom_Up(M [][][]int64) int64 {
+func Bottom_Up(M [][][]int64) [][]int64 {
 	n := (len(M) + 1)
 
 	m := make([][]int64, n)
@@ -167,8 +173,10 @@ func Bottom_Up(M [][][]int64) int64 {
 		}
 	}
 
-	PrintMatrix(Mult(M, s, 1, int64(len(M))))
-	return m[1][n-1]
+	NewMatrix := Mult(M, s, 1, int64(len(M)))
+
+	fmt.Println("Costo Total:", m[1][n-1])
+	return NewMatrix
 }
 
 func Mult(M [][][]int64, s [][]int64, i, j int64) [][]int64 {
@@ -186,31 +194,73 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	// n, a , b
-	Matrices := MatrixGenerator(4, 5, 10)
+	Matrices := MatrixGenerator(30, 50, 500)
 
-	Aux1 := make([][][]int64, len(Matrices))
-	Aux2 := make([][][]int64, len(Matrices))
-	Aux3 := make([][][]int64, len(Matrices))
-	Aux4 := make([][][]int64, len(Matrices))
-	copy(Aux1, Matrices[0:])
-	copy(Aux2, Matrices[0:])
-	copy(Aux3, Matrices[0:])
-	copy(Aux4, Matrices[0:])
+	var t_prom float64
+	var test int = 1
+
+	////////////////////////////////////////////////////////
 
 	fmt.Println("Naive:")
-	Naive(Aux1, 0)
-	PrintMatrix(Aux1[0])
+	t_prom = 0
+	for i := 0; i < test; i++ {
+		Aux := make([][][]int64, len(Matrices))
+		copy(Aux, Matrices[0:])
+		t1 := time.Now()
+		Naive(Aux, 0)
+		t2 := time.Since(t1)
+		t_prom = t_prom + (float64(t2) / 1000000000)
+	}
+	t_prom = t_prom / float64(test)
+	fmt.Println("Tiempo Ejecución: ", t_prom)
 	fmt.Println("---------")
+
+	////////////////////////////////////////////////////////
 
 	fmt.Println("Greedy:")
-	Greedy(Aux2, 0)
-	PrintMatrix(Aux2[0])
+	t_prom = 0
+	for i := 0; i < test; i++ {
+		Aux := make([][][]int64, len(Matrices))
+		copy(Aux, Matrices[0:])
+		t1 := time.Now()
+		Greedy(Aux, 0)
+		t2 := time.Since(t1)
+		t_prom = t_prom + (float64(t2) / 1000000000)
+	}
+	t_prom = t_prom / float64(test)
+	fmt.Println("Tiempo Ejecución: ", t_prom)
 	fmt.Println("---------")
+
+	////////////////////////////////////////////////////////
 
 	fmt.Println("Bottom-Up:")
-	fmt.Println("Costo Total:", Bottom_Up(Aux3))
+	t_prom = 0
+	for i := 0; i < test; i++ {
+		Aux := make([][][]int64, len(Matrices))
+		copy(Aux, Matrices[0:])
+		t1 := time.Now()
+		Bottom_Up(Aux)
+		t2 := time.Since(t1)
+		t_prom = t_prom + (float64(t2) / 1000000000)
+	}
+	t_prom = t_prom / float64(test)
+	fmt.Println("Tiempo Ejecución: ", t_prom)
 	fmt.Println("---------")
 
+	////////////////////////////////////////////////////////
+
 	fmt.Println("Top-Down:")
-	fmt.Println("Costo Total:", Top_Down(Aux4))
+	t_prom = 0
+	for i := 0; i < test; i++ {
+		Aux := make([][][]int64, len(Matrices))
+		copy(Aux, Matrices[0:])
+		t1 := time.Now()
+		Top_Down(Aux)
+		t2 := time.Since(t1)
+		t_prom = t_prom + (float64(t2) / 1000000000)
+	}
+	t_prom = t_prom / float64(test)
+	fmt.Println("Tiempo Ejecución: ", t_prom)
+	fmt.Println("---------")
+
 }
