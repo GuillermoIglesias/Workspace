@@ -14,7 +14,7 @@ func M_Factory(n, m int) [][]int64 {
 	}
 	for i := 0; i < n; i++ {
 		for j := 0; j < m; j++ {
-			Matrix[i][j] = rand.Int63n(1) + 1
+			Matrix[i][j] = (rand.Int63n(2) + 1)
 		}
 	}
 	return Matrix
@@ -24,6 +24,21 @@ func PrintMatrix(Matrix [][]int64) {
 	for i := 0; i < len(Matrix); i++ {
 		fmt.Println(Matrix[i])
 	}
+}
+
+func MatrixGenerator(n, a, b int) [][][]int64 {
+	MatrixArray := make([][][]int64, n)
+	RNG := make([]int, n+1)
+
+	for i := 0; i < len(RNG); i++ {
+		RNG[i] = (rand.Intn(b) + a)
+	}
+
+	for i := 0; i < len(MatrixArray); i++ {
+		MatrixArray[i] = M_Factory(RNG[i], RNG[i+1])
+	}
+
+	return MatrixArray
 }
 
 func Multiplicador(A, B [][]int64) [][]int64 {
@@ -168,22 +183,10 @@ func Mult(M [][][]int64, s [][]int64, i, j int64) [][]int64 {
 }
 
 func main() {
-
 	rand.Seed(time.Now().UnixNano())
 
-	A := M_Factory(3, 2)
-	B := M_Factory(2, 1)
-	C := M_Factory(1, 5)
-	D := M_Factory(5, 2)
-	E := M_Factory(2, 2)
-	F := M_Factory(2, 2)
-	G := M_Factory(2, 1)
-	H := M_Factory(1, 5)
-	I := M_Factory(5, 3)
-	J := M_Factory(3, 3)
-
-	//Matrices := [][][]int64{A, B, C, D}
-	Matrices := [][][]int64{A, B, C, D, E, F, G, H, I, J}
+	// n, a , b
+	Matrices := MatrixGenerator(4, 5, 10)
 
 	Aux1 := make([][][]int64, len(Matrices))
 	Aux2 := make([][][]int64, len(Matrices))
