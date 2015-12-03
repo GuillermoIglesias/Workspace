@@ -24,7 +24,7 @@ func M_Factory(n, m int) [][]int64 {
 	// Relleno de la Matriz, valores random son configurables.
 	for i := 0; i < n; i++ {
 		for j := 0; j < m; j++ {
-			Matrix[i][j] = (rand.Int63n(1) + 1)
+			Matrix[i][j] = rand.Int63n(3)
 		}
 	}
 
@@ -248,15 +248,15 @@ func Mult(M [][][]int64, s [][]int64, i, j int64) [][]int64 {
 }
 
 func main() {
-	// Seed utilizada para numeros random.
+	// Seed utilizada para números random.
 	rand.Seed(time.Now().UnixNano())
 
 	// Genera n Matrices de dimensión entre [a,b]
 	// MatrixGenerator(n,a,b)
-	Matrices := MatrixGenerator(10, 10, 500)
+	Matrices := MatrixGenerator(10, 10, 1000)
 
 	var t_prom float64
-	var test int = 1 //Cantidad de tests para promediarlos.
+	var test int = 10 //Cantidad de tests para promediarlos.
 
 	/*	Para la realización de este experimento, se utilizan X tests,
 		para cada test se obtiene un valor de tiempo, el cual será promediado.
