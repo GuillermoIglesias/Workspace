@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
@@ -18,9 +19,6 @@ import (
 
 func main() {
 	// Declaración de variables a utilizar.
-	var name string
-	var last_name string
-
 	conf_5 := 0
 	conf_3 := 0
 	journal_5 := 0
@@ -29,14 +27,14 @@ func main() {
 	URL_prefix := "http://dblp.uni-trier.de/pers/hd/"
 
 	// Input: Nombre Apellido.
-	fmt.Scanf("%s %s", &name, &last_name)
+	person := os.Args
 
-	fmt.Println("Nombre:", name)
-	fmt.Println("Apellido:", last_name)
+	fmt.Println("Nombre:", person[1])
+	fmt.Println("Apellido:", person[2])
 
 	// Concatenacion de la URL.
-	URL_final := []string{URL_prefix, strings.ToLower(string(last_name[0])), "/", last_name, ":", name}
-	fmt.Println(strings.Join(URL_final, ""))
+	URL_final := []string{URL_prefix, strings.ToLower(string(person[2][0])), "/", person[2], ":", person[1]}
+	fmt.Println("URL:", strings.Join(URL_final, ""))
 
 	// Extracción de la URL.
 	web, err := http.Get(strings.Join(URL_final, ""))
@@ -76,7 +74,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		year > 10 && year < 50 {
+		if year > 10 && year < 50 {
 			conf_5++
 			if year > 12 {
 				conf_3++
@@ -104,11 +102,11 @@ func main() {
 	}
 
 	// Impresión cantidad de Revistas y Conferencias.
-	fmt.Println("Revista:", len(j_matches))
-	fmt.Println("Conferencia:", len(c_matches))
-	fmt.Println("Revista (5 años):", journal_5)
-	fmt.Println("Conferencia (5 años):", conf_5)
-	fmt.Println("Revista (5 años):", journal_3)
-	fmt.Println("Conferencia (5 años):", conf_3)
+	fmt.Println("Revistas:", len(j_matches))
+	fmt.Println("Conferencias:", len(c_matches))
+	fmt.Println("Revistas (5 años):", journal_5)
+	fmt.Println("Conferencias (5 años):", conf_5)
+	fmt.Println("Revistas (5 años):", journal_3)
+	fmt.Println("Conferencias (5 años):", conf_3)
 
 }
