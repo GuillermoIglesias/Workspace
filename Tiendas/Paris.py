@@ -9,16 +9,17 @@ def Paris():
 	Modelos_Z, Tallas_Z, Precios_Z = [], [], []
 
 	# URL de la tienda online de Paris
-	mcan = str(400) # Modificar este valor para ver una cantidad maxima de resultados
-			       	# Con un valor de 400 se muestran todos los resultados existentes
-			       	# Se puede reducir este valor para realizar pruebas, debido al tiempo de ejecucicion
-	url  = 'http://www.paris.cl/webapp/wcs/stores/servlet/SearchDisplay?searchTermScope=&searchType=1000&filterTerm=&orderBy=&maxPrice=&showResultsPage=true&langId=-5&beginIndex=0&sType=SimpleSearch&metaData=YWRzX2YyNTUwMV9udGtfY3M6IlJ1bm5pbmci&manufacturer=&resultCatEntryType=&catalogId=40000000629&pageView=image&searchTerm=&minPrice=&categoryId=51386230&storeId=10801&pageSize=' + mcan
-	page = urllib2.urlopen(url)
-	html = page.read()
+	psize = str(50) # Modificar este valor para ver una cantidad maxima de resultados
+			       	 # Con un valor de 400 se muestran todos los resultados existentes
+			       	 # Se puede reducir este valor para realizar pruebas, debido al tiempo de ejecucion
+	url   = 'http://www.paris.cl/webapp/wcs/stores/servlet/SearchDisplay?searchTermScope=&searchType=1000&filterTerm=&orderBy=&maxPrice=&showResultsPage=true&langId=-5&beginIndex=0&sType=SimpleSearch&metaData=YWRzX2YyNTUwMV9udGtfY3M6IlJ1bm5pbmci&manufacturer=&resultCatEntryType=&catalogId=40000000629&pageView=image&searchTerm=&minPrice=&categoryId=51386230&storeId=10801&pageSize=' + psize
+	page  = urllib2.urlopen(url)
+	html  = page.read()
 
 	# Buscar las URL de todas zapatillas
 	url_zap = re.findall(r'<a  href="http://www.paris.cl/tienda/es/paris/moda-calzado/moda-calzado/.*-',html)
 
+	# Se revisa el URL de cada zapatilla, debido a que en el URL principal no se encuentran las tallas
 	for i in range(0,len(url_zap)):
 		# Abrir el URL de cada zapatilla para obtener sus caracteristicas 
 		page_zap = urllib2.urlopen(url_zap[i][10:])
