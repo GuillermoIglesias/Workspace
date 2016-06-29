@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Busca todos los resultados de zapatillas de la pagina Sparta.cl
+=======
+# Busca todos los resultados de zapatillas de la pagina sparta.cl
+>>>>>>> origin/master
 # Retorna 3 arreglos en donde se almacenan los resultados
 
 import urllib2 
@@ -9,17 +13,25 @@ def Sparta():
 	Modelos_Z, Tallas_Z, Precios_Z = [], [], []	
 
 	# URL de la tienda online de Sparta
+<<<<<<< HEAD
 	psize = str(30)  # Modificar este valor para ver una cantidad maxima de resultados
 			       	 # Con un valor de 30 se muestran todos los resultados existentes
 			       	 # Se puede reducir este valor para realizar pruebas, debido al tiempo de ejecucion
 	url  = 'http://www.sparta.cl/deportes/running/zapatillas-running.html?limit=' + psize
+=======
+	url  = 'http://www.sparta.cl/deportes/running/zapatillas-running.html?limit=30'
+>>>>>>> origin/master
 	page = urllib2.urlopen(url)
 	html = page.read()
 
 	# Buscar las URL de todas zapatillas
 	url_zap = re.findall(r'<a class="area-link" href="http://www.sparta.cl/deportes/running/zapatillas-running/.*html',html)
 
+<<<<<<< HEAD
 	# Se revisa el URL de cada zapatilla, debido a que en el URL principal no se encuentran las tallas
+=======
+
+>>>>>>> origin/master
 	for i in range(0,len(url_zap)):
 		# Abrir el URL de cada zapatilla para obtener sus caracteristicas
 		page_zap = urllib2.urlopen(url_zap[i][27:])
@@ -30,7 +42,11 @@ def Sparta():
 		genero_str  = re.findall(r'([A-Za-z]+)', genero[0]) # Se limpia el string para dejar solamente el genero
 
 		# Encontrar sus tallas disponibles
+<<<<<<< HEAD
 		tallas      = re.findall(r',"label":"([^:"a-zA-Z]+)"', html_zap)
+=======
+		tallas      = re.findall(r',"label":"([^ _|:"a-zA-Z]+)"', html_zap)
+>>>>>>> origin/master
 
 		# Algunos productos no tienen tallas disponibles
 		if len(tallas) == 0: 
@@ -72,12 +88,19 @@ def Sparta():
 		modelo      = re.findall(r'<h1 class="h1"  itemprop="name">([^<]+)', html_zap)
 
 		# Encontrar su precio
+<<<<<<< HEAD
 		precio = re.findall(r'<span class="price" id="product-price-....">(.+?)</span>', html, flags = re.DOTALL)
 		if len(precio) == 0: # Algunos productos tienen el precio en un formato diferente
 			precio = re.findall(r'<span class="price" id="old-price-....">(.+?)</span>', html, flags = re.DOTALL)
 		precio_str = re.findall(r'([0-9\.\$]+)', precio[0]) # Se limpia el string para dejar solamente el precio
 		if len(precio_str) == 0: # Algunos productos no tienen precio, al no existir stock al momento de consultar
 			continue 
+=======
+		precio 		= re.findall(r'<span class="price" id="product-price-....">(.+?)</span>', html, flags = re.DOTALL)
+		if len(precio) == 0: # Algunos productos tienen el precio en un formato diferente
+			precio 		= re.findall(r'<span class="price" id="old-price-....">(.+?)</span>', html, flags = re.DOTALL)
+		precio_str  = re.findall(r'([0-9\.\$]+)', precio[0]) # Se limpia el string para dejar solamente el precio
+>>>>>>> origin/master
 
 		# Almacenamiento de datos correspondientes
 		Modelos_Z.append(modelo)
@@ -87,4 +110,9 @@ def Sparta():
 		# Solo se utiliza en caso de querer ver las URLs de cada zapatilla elegida
 		# print url_zap[i][27:]
 		
+<<<<<<< HEAD
 	return Modelos_Z, Tallas_Z, Precios_Z	
+=======
+	return Modelos_Z, Tallas_Z, Precios_Z	
+
+>>>>>>> origin/master
